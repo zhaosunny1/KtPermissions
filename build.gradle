@@ -1,59 +1,36 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    repositories {
-        google()
-        jcenter()
+    ext {
+        compileSdk = 33
+        minSdk = 21
+        minSdkVersionDebug = 21
+        targetSdk = 28
+
+        kotlin_version = '1.8.22'
+        anko_version = '0.10.8'
+        nav_version = "2.3.5"
+
+        room_version = "2.5.1"
+        lifecycle_version = "2.4.0"
+        paging_version = "2.1.2"
+        work_version = "2.3.4"
+        compose_version = "1.0.1"
+
+        glide_version = "4.12.0"
+        arouter_version = "1.5.2"
+
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+
     }
 }
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+plugins {
+    id 'com.android.application' version '8.1.2' apply false
+    id 'com.android.library' version '8.1.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.22' apply false
+    id 'org.jetbrains.kotlin.kapt' version '1.8.22' apply false
 }
 
-ext {
-    minSdkVersion = 14
-    compileSdkVersion = 29
-    targetSdkVersion = compileSdkVersion
-
-    rxJava = 'io.reactivex.rxjava3:rxjava:3.0.4'
-    junit = 'junit:junit:4.13'
-    mockito = 'org.mockito:mockito-core:3.3.3'
-
-    androidXFragment = 'androidx.fragment:fragment:1.2.5'
-    androidXAnnotation = 'androidx.annotation:annotation:1.1.0'
-    androidXAppcompat =  'androidx.appcompat:appcompat:1.1.0'
-
-    robolectricVersion = '4.3.1'
-    robolectric = "org.robolectric:robolectric:$robolectricVersion"
-    robolectricShadowsSupport = "org.robolectric:shadows-support-v4:$robolectricVersion"
-    // Workaround for https://github.com/robolectric/robolectric/issues/1932
-    khronosOpenGLApi = "org.khronos:opengl-api:gl1.1-android-2.1_r1"
-
-    bintrayRepo = 'tbruyelle'
-    bintrayName = 'RxPermissions3'
-
-    publishedGroupId = 'com.tbruyelle.rxpermissions3'
-    artifact = 'rxpermissions'
-    libraryName = 'RxPermissions'
-    libraryVersion = '0.9.5'
-
-    libraryDescription = 'A wrapper for Android 6.0 permissions'
-
-    siteUrl = 'https://github.com/tbruyelle/RxPermissions'
-    gitUrl = 'https://github.com/tbruyelle/RxPermissions.git'
-
-    developerId = 'tbruyelle'
-    developerName = 'Thomas Bruyelle'
-    developerEmail = 'thomas.bruyelle@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }

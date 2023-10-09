@@ -1,13 +1,12 @@
 package com.tbruyelle.rxpermissions3;
 
-import java.util.List;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.BiConsumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Predicate;
-
 public class Permission {
+    /**
+     * 0 开始  1 结束 -1 默认
+     *
+     * @author zhaoyang 2023/10/9
+     */
+    public Integer mask = -1;
     public final String name;
     public final boolean granted;
     public final boolean shouldShowRequestPermissionRationale;
@@ -22,11 +21,16 @@ public class Permission {
         this.shouldShowRequestPermissionRationale = shouldShowRequestPermissionRationale;
     }
 
-    public Permission(List<Permission> permissions) {
-        name = combineName(permissions);
-        granted = combineGranted(permissions);
-        shouldShowRequestPermissionRationale = combineShouldShowRequestPermissionRationale(permissions);
+    public void setMask(Integer mask) {
+        this.mask = mask;
     }
+
+
+    //    public Permission(List<Permission> permissions) {
+//        name = combineName(permissions);
+//        granted = combineGranted(permissions);
+//        shouldShowRequestPermissionRationale = combineShouldShowRequestPermissionRationale(permissions);
+//    }
 
     @Override
     @SuppressWarnings("SimplifiableIfStatement")
@@ -59,42 +63,42 @@ public class Permission {
                 '}';
     }
 
-    private String combineName(List<Permission> permissions) {
-        return Observable.fromIterable(permissions)
-                .map(new Function<Permission, String>() {
-                    @Override
-                    public String apply(Permission permission) throws Exception {
-                        return permission.name;
-                    }
-                }).collectInto(new StringBuilder(), new BiConsumer<StringBuilder, String>() {
-                    @Override
-                    public void accept(StringBuilder s, String s2) throws Exception {
-                        if (s.length() == 0) {
-                            s.append(s2);
-                        } else {
-                            s.append(", ").append(s2);
-                        }
-                    }
-                }).blockingGet().toString();
-    }
+//    private String combineName(List<Permission> permissions) {
+//        return Observable.fromIterable(permissions)
+//                .map(new Function<Permission, String>() {
+//                    @Override
+//                    public String apply(Permission permission) throws Exception {
+//                        return permission.name;
+//                    }
+//                }).collectInto(new StringBuilder(), new BiConsumer<StringBuilder, String>() {
+//                    @Override
+//                    public void accept(StringBuilder s, String s2) throws Exception {
+//                        if (s.length() == 0) {
+//                            s.append(s2);
+//                        } else {
+//                            s.append(", ").append(s2);
+//                        }
+//                    }
+//                }).blockingGet().toString();
+//    }
 
-    private Boolean combineGranted(List<Permission> permissions) {
-        return Observable.fromIterable(permissions)
-                .all(new Predicate<Permission>() {
-                    @Override
-                    public boolean test(Permission permission) throws Exception {
-                        return permission.granted;
-                    }
-                }).blockingGet();
-    }
-
-    private Boolean combineShouldShowRequestPermissionRationale(List<Permission> permissions) {
-        return Observable.fromIterable(permissions)
-                .any(new Predicate<Permission>() {
-                    @Override
-                    public boolean test(Permission permission) throws Exception {
-                        return permission.shouldShowRequestPermissionRationale;
-                    }
-                }).blockingGet();
-    }
+//    private Boolean combineGranted(List<Permission> permissions) {
+//        return Observable.fromIterable(permissions)
+//                .all(new Predicate<Permission>() {
+//                    @Override
+//                    public boolean test(Permission permission) throws Exception {
+//                        return permission.granted;
+//                    }
+//                }).blockingGet();
+//    }
+//
+//    private Boolean combineShouldShowRequestPermissionRationale(List<Permission> permissions) {
+//        return Observable.fromIterable(permissions)
+//                .any(new Predicate<Permission>() {
+//                    @Override
+//                    public boolean test(Permission permission) throws Exception {
+//                        return permission.shouldShowRequestPermissionRationale;
+//                    }
+//                }).blockingGet();
+//    }
 }

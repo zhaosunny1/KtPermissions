@@ -1,16 +1,20 @@
-apply plugin: 'com.android.library'
-apply from: 'jitpack.gradle'
-
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+}
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    namespace 'cn.zhaosunny.ktpermissions'
 
+    compileSdk rootProject.ext.compileSdk
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdk rootProject.ext.minSdk
+        targetSdk rootProject.ext.targetSdk
     }
     buildTypes {
         release {
@@ -18,28 +22,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    testOptions.unitTests.includeAndroidResources = true
-    testOptions.unitTests.all {
-        // unitTests.returnDefaultValues = true
-        // Always show the result of every unit test, even if it passes.
-        testLogging {
-            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
-        }
-    }
+//    testOptions.unitTests.includeAndroidResources = true
+//    testOptions.unitTests.all {
+//        // unitTests.returnDefaultValues = true
+//        // Always show the result of every unit test, even if it passes.
+//        testLogging {
+//            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+//        }
+//    }
 }
 
 dependencies {
-    implementation rootProject.ext.rxJava
-    implementation rootProject.ext.androidXFragment
-    implementation rootProject.ext.androidXAnnotation
-    implementation rootProject.ext.androidXAppcompat
+    api 'androidx.appcompat:appcompat:1.6.1'
+    api 'androidx.fragment:fragment:1.6.1'
+    api 'androidx.annotation:annotation:1.6.0'
 
     testImplementation 'junit:junit:4.13'
-    testImplementation rootProject.ext.mockito
-    testImplementation rootProject.ext.robolectric
-    testImplementation rootProject.ext.khronosOpenGLApi
+//    testImplementation rootProject.ext.mockito
+//    testImplementation rootProject.ext.robolectric
+//    testImplementation rootProject.ext.khronosOpenGLApi
+    api "androidx.core:core:1.9.0"
+    api "androidx.core:core-ktx:1.9.0"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 }
 
-// Commented to use JitPack instead of bintray
-//apply from: 'install.gradle'
-//apply from: 'bintray.gradle'
+
