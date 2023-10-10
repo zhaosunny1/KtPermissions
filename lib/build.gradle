@@ -3,14 +3,15 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
 }
-group = 'cn.zhaosunny'
+
+group = 'com.github.zhaosunny1'
 version = '1.0.0alpha'
 afterEvaluate {
     publishing {
         publications {
             mavenRelease(MavenPublication) {
-                groupId = 'cn.zhaosunny'
-                artifactId = 'ktpermissions'
+                groupId = 'com.github.zhaosunny1'
+                artifactId = 'KtPermissions'
                 version = '1.0.0alpha'
                 afterEvaluate {
                     from components.release
