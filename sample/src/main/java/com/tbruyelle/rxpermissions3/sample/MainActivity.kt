@@ -3,6 +3,7 @@ package com.tbruyelle.rxpermissions3.sample
 import android.Manifest
 import android.hardware.Camera
 import android.os.Bundle
+import android.util.Log
 import android.view.SurfaceView
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.RECORD_AUDIO
             ) {
-
+                Log.e(TAG, "onCreate: 权限申请结果：${if (it) "成功" else "失败"}")
             }
 
         }

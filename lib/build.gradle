@@ -5,14 +5,14 @@ plugins {
 }
 
 group = 'com.github.zhaosunny1'
-version = '1.0.0alpha'
+version = '1.0.0'
 afterEvaluate {
     publishing {
         publications {
             mavenRelease(MavenPublication) {
                 groupId = 'com.github.zhaosunny1'
                 artifactId = 'KtPermissions'
-                version = '1.0.0alpha'
+                version = '1.0.0'
                 afterEvaluate {
                     from components.release
                 }

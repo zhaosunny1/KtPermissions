@@ -13,7 +13,7 @@ android {
     defaultConfig {
         minSdk rootProject.ext.minSdk
         targetSdk rootProject.ext.targetSdk
-        applicationId "cn.zhaosunny.app"
+        applicationId "cn.zhaosunny.app2"
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

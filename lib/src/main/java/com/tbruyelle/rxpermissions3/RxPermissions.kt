@@ -162,6 +162,10 @@ class RxPermissions {
         if (!unrequestedPermissions.isEmpty()) {
             val unrequestedPermissionsArray = unrequestedPermissions.toTypedArray()
             requestPermissionsFromFragment(unrequestedPermissionsArray)
+        }else{
+            val p = Permission("End", false)
+            p.mask = 1
+            sharedFlow.emit(p)
         }
     }
 

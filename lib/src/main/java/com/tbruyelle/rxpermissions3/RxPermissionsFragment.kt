@@ -18,7 +18,7 @@ class RxPermissionsFragment : Fragment(), CoroutineScope by MainScope() {
     // Contains all the current permission requests.
     // Once granted or denied, they are removed from it.
     private val mSubjects: MutableMap<String, MutableSharedFlow<Permission>> = HashMap()
-    private var mLogging = true
+    private var mLogging = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
