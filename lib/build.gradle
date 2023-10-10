@@ -3,6 +3,23 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
 }
+group = 'cn.zhaosunny'
+
+afterEvaluate {
+    publishing {
+        publications {
+            mavenRelease(MavenPublication) {
+                groupId = 'cn.zhaosunny'
+                artifactId = 'ktpermissions'
+                version = '1.0.0alpha'
+                afterEvaluate {
+                    from components.release
+                }
+
+            }
+        }
+    }
+}
 android {
     namespace 'cn.zhaosunny.ktpermissions'
 
@@ -22,14 +39,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-//    testOptions.unitTests.includeAndroidResources = true
-//    testOptions.unitTests.all {
-//        // unitTests.returnDefaultValues = true
-//        // Always show the result of every unit test, even if it passes.
-//        testLogging {
-//            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
-//        }
-//    }
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+
 }
 
 dependencies {
@@ -38,9 +57,7 @@ dependencies {
     api 'androidx.annotation:annotation:1.6.0'
 
     testImplementation 'junit:junit:4.13'
-//    testImplementation rootProject.ext.mockito
-//    testImplementation rootProject.ext.robolectric
-//    testImplementation rootProject.ext.khronosOpenGLApi
+
     api "androidx.core:core:1.9.0"
     api "androidx.core:core-ktx:1.9.0"
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
