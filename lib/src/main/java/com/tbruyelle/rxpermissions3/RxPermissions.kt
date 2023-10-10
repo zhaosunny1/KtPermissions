@@ -23,11 +23,16 @@ import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
+
 
 class RxPermissions {
     @VisibleForTesting
@@ -37,12 +42,16 @@ class RxPermissions {
     var permissions: ArrayList<String> = ArrayList()
     var resultPermission: ArrayList<Permission> = ArrayList()
     var sharedFlow: MutableSharedFlow<Permission> = MutableSharedFlow()
+    var coroutineScope: CoroutineScope? = null
 
     constructor(activity: FragmentActivity) {
         mRxPermissionsFragment = getLazySingleton(activity.supportFragmentManager)
         permissions = ArrayList()
         resultPermission = ArrayList()
         sharedFlow = MutableSharedFlow()
+        if (activity is CoroutineScope) {
+            coroutineScope = activity
+        }
     }
 
     constructor(fragment: Fragment) {
@@ -51,6 +60,9 @@ class RxPermissions {
         permissions = ArrayList()
         resultPermission = ArrayList()
         sharedFlow = MutableSharedFlow()
+        if (fragment is CoroutineScope) {
+            coroutineScope = fragment
+        }
     }
 
     private fun getLazySingleton(fragmentManager: FragmentManager): Lazy<RxPermissionsFragment> {
@@ -93,31 +105,29 @@ class RxPermissions {
      * Request permissions immediately, **must be invoked during initialization phase
      * of your application**.
      */
-
-
     @Suppress("unused")
-    suspend fun request(
-        permissions: Array<String>,
-        invoked: RequestInvoke = RequestInvoke { },
-        granted: RequestGranted,
-    ) {
-        sharedFlow = MutableSharedFlow(extraBufferCapacity = permissions.size + 2)
-        requestImplementation(*permissions)
-        sharedFlow.collect {
-            Log.e(TAG, "收到权限: " + it.name + " mask=" + it.mask)
-            if (it.mask == 0) {
-                resultPermission.clear()
-            } else if (it.mask == -1) {
-                resultPermission.add(it)
-            } else if (it.mask == 1) {
-                val s = resultPermission.filter { i -> !i.granted }
-                if (s.isEmpty()) {
-                    granted.onGranted()
-                } else {
-                    invoked.onInvoked(s.toTypedArray())
+    fun request(vararg permissions: String, result: (Boolean) -> Unit) {
+        coroutineScope?.launch {
+            sharedFlow = MutableSharedFlow(extraBufferCapacity = permissions.size + 2)
+            requestImplementation(*permissions)
+            sharedFlow.collect {
+                Log.e(TAG, "收到权限: " + it.name + " mask=" + it.mask)
+                if (it.mask == 0) {
+                    resultPermission.clear()
+                } else if (it.mask == -1) {
+                    resultPermission.add(it)
+                } else if (it.mask == 1) {
+                    val s = resultPermission.filter { i -> !i.granted }
+                    if (s.isEmpty()) {
+                        result.invoke(true)
+                    } else {
+                        result.invoke(false)
+//                        result.onInvoked(s.toTypedArray())
+                    }
                 }
             }
         }
+
 
     }
 

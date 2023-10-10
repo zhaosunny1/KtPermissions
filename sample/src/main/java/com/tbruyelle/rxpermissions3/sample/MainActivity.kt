@@ -3,18 +3,13 @@ package com.tbruyelle.rxpermissions3.sample
 import android.Manifest
 import android.hardware.Camera
 import android.os.Bundle
-import android.util.Log
 import android.view.SurfaceView
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.zhaosunny.myapplication.R
-import com.tbruyelle.rxpermissions3.Permission
-import com.tbruyelle.rxpermissions3.RequestInvoke
 import com.tbruyelle.rxpermissions3.RxPermissions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private val camera: Camera? = null
@@ -24,23 +19,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         setContentView(R.layout.act_main)
 
         findViewById<View>(R.id.enableCamera).setOnClickListener {
-            launch {
-                val rxPermissions = RxPermissions(this@MainActivity)
-                rxPermissions.setLogging(true)
-                rxPermissions.request(
-                    arrayOf(
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.CALL_PHONE,
-                        Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.RECORD_AUDIO,
-                    ),
-                    {
-                        Log.e(TAG, "onCreate: 申请权限失败" + it.size)
-                    },
-                    {
-                        Log.e(TAG, "onCreate: 申请权限成功")
-                    })
+            val rxPermissions = RxPermissions(this@MainActivity)
+            rxPermissions.setLogging(true)
+            rxPermissions.request(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.RECORD_AUDIO
+            ) {
+
             }
+
         }
 
     } //        setContentView(R.layout.act_main);
