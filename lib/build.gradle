@@ -4,19 +4,31 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.zhaosunny1'
-version = '1.0.0'
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+group = 'com.gitee.cbsd_mobile'
+
 afterEvaluate {
     publishing {
         publications {
             mavenRelease(MavenPublication) {
-                groupId = 'com.github.zhaosunny1'
+                groupId = 'com.gitee.cbsd_mobile'
                 artifactId = 'KtPermissions'
                 version = '1.0.0'
                 afterEvaluate {
                     from components.release
                 }
-
+            }
+        }
+        repositories {
+            maven {
+                url = keystoreProperties['MAVEN_URL']
+                credentials {
+                    username = keystoreProperties['username']
+                    password = keystoreProperties['password']
+                }
             }
         }
     }
@@ -26,8 +38,8 @@ android {
 
     compileSdk rootProject.ext.compileSdk
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
@@ -53,17 +65,17 @@ android {
 }
 
 dependencies {
-    api 'androidx.appcompat:appcompat:1.6.1'
-    api 'androidx.fragment:fragment:1.6.1'
-    api 'androidx.annotation:annotation:1.6.0'
+    api 'androidx.appcompat:appcompat:1.3.1'
+    api 'androidx.fragment:fragment:1.3.1'
+    api 'androidx.annotation:annotation:1.2.0'
 
     testImplementation 'junit:junit:4.13'
 
-    api "androidx.core:core:1.9.0"
-    api "androidx.core:core-ktx:1.9.0"
+    api "androidx.core:core:1.7.0"
+    api "androidx.core:core-ktx:1.7.0"
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
 }
 
 
